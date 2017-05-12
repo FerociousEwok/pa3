@@ -23,13 +23,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="graph02.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="intVec.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="loadGraph.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dfsTrace1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scc03.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

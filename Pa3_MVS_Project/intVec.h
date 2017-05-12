@@ -5,8 +5,8 @@
 #ifndef C101IntVec
 #define C101IntVec
 /* Multiple typedefs for the same type are an error in C. */
- * The above ifndef and define prevent multiple copies of code below.
- */
+/* The above ifndef and define prevent multiple copies of code below.
+*/
 
 typedef struct IntVecNode * IntVec;
 

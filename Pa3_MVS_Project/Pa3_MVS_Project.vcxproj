@@ -114,7 +114,8 @@
     <ClInclude Include="loadGraph.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="graph02.c" />
+    <ClCompile Include="dfsTrace1.c" />
+    <ClCompile Include="scc03.c" />
     <ClCompile Include="intVec.c" />
     <ClCompile Include="loadGraph.c" />
   </ItemGroup>

@@ -34,7 +34,7 @@ The following is the Integer vector node adt.
 			fprintf(stderr, "Error: myVec->capacity==0");
 			exit( 0);
 		}
-		return myVec->data[(myVec->sz) - 1]; //this used to be special
+		return myVec->data[(myVec->sz) - 1];
 	}
 
 	/** intData()
