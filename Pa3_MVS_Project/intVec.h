@@ -1,13 +1,10 @@
 /* intVec.h
- * Ben Donn
- * bdonn
- * pa2
- * the purpose of this file is to define functions for intvec.c
+ * (what is the overall purpose of this file? Replace question with your text)
  */
 
 #ifndef C101IntVec
 #define C101IntVec
-/* Multiple typedefs for the same type are an error in C. 
+/* Multiple typedefs for the same type are an error in C. */
  * The above ifndef and define prevent multiple copies of code below.
  */
 
@@ -20,7 +17,7 @@ static const int intInitCap = 4;
  */
 
 /** intTop()
- * (preconditions are myVec != NULL && intSize(myVec) != 0 )
+ * (what are the preconditions? Replace question with your text)
  */
 int intTop(IntVec myVec);
 
@@ -48,6 +45,13 @@ int intCapacity(IntVec myVec);
  *    Then intCapacity(/return) == 4, intSize(/return) == 0).
  */
 IntVec intMakeEmptyVec(void);
+
+/** intMakeEmptyVecN()
+ * preconditions: none.
+ * postconditions: Let /return be the value returned by intMakeEmptyVec(np1).
+ *    Then intCapacity(/return) == (np1), intSize(/return) == 0).
+ */
+IntVec intMakeEmptyVecN(int np1);
 
 /* Manipulation Procedures
  */
