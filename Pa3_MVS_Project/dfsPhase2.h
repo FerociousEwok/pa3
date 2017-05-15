@@ -1,1 +1,7 @@
-#pragma once
+/*
+
+
+*/
+
+void dfsPhase2();
+void dfsSweepT();

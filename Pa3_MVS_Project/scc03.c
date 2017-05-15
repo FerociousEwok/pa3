@@ -65,6 +65,11 @@ strictly the same as this handout.
 #include <string.h>
 #include "intVec.h"
 #include "loadGraph.h"
+#include "dfsTrace1.h"
+#include "dfsPhase2.h"
+int nodeCount = 0;
+IntVec finishStk1;
+char *color;
 
 void findSCCs()
 {
@@ -79,7 +84,7 @@ int main(int argc, char **argv)
 	char *readMode = "r+";
 	IntVec *adjList;
 	char *flag = "default";
-	int nodeCount = 0;
+	
 	int flagCheckOne = 0, flagCheckTwo = 0;
 	int** adjMatrix;
 
@@ -117,11 +122,20 @@ int main(int argc, char **argv)
 		getc(stdin);
 		exit(1);
 	}
+
+	finishStk1 = intMakeEmptyVecN(nodeCount);//news
+	color = calloc(nodeCount, sizeof(char));
+	for (int i = 1; i <= nodeCount; i++)
+		color[i] = "W";
+
 	adjList = loadGraph(inputFile, nodeCount, flag);
 	adjMatrix = makeAdjMatrix(adjList, nodeCount);
 	printAdjVerts(adjList, nodeCount);
 	if (nodeCount <= 20)
 		printAdjMatrix(adjMatrix, nodeCount);
+
+	
+
 
 /*MAIN FOR PA2
 	fprintf(stdout, "FLAG == %s\n\n", flag);
