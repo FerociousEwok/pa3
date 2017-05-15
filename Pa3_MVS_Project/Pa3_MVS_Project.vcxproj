@@ -110,6 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="dfsTrace1.h" />
     <ClInclude Include="intVec.h" />
     <ClInclude Include="loadGraph.h" />
   </ItemGroup>

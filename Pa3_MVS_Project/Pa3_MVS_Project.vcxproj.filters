@@ -21,6 +21,9 @@
     <ClInclude Include="loadGraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="dfsTrace1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="intVec.c">
