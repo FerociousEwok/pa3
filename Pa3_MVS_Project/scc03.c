@@ -66,6 +66,11 @@ strictly the same as this handout.
 #include "intVec.h"
 #include "loadGraph.h"
 
+void findSCCs()
+{
+
+}
+
 int main(int argc, char **argv)
 {
 	//variables
@@ -76,6 +81,7 @@ int main(int argc, char **argv)
 	char *flag = "default";
 	int nodeCount = 0;
 	int flagCheckOne = 0, flagCheckTwo = 0;
+	int** adjMatrix;
 
 	if (argc == 1) //no command line argument
 	{
@@ -97,6 +103,10 @@ int main(int argc, char **argv)
 		getc(stdin);
 		exit(1);
 	}
+	/*NEW COMMAND LINE CHECK:(if user wants to type in file name)
+
+	*/
+
 
 	nodeCount = getNodeCount(inputFile);
 	flagCheckOne = strcmp(flag, "-U");
@@ -108,7 +118,12 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 	adjList = loadGraph(inputFile, nodeCount, flag);
+	adjMatrix = makeAdjMatrix(adjList, nodeCount);
+	printAdjVerts(adjList, nodeCount);
+	if (nodeCount <= 20)
+		printAdjMatrix(adjMatrix, nodeCount);
 
+/*MAIN FOR PA2
 	fprintf(stdout, "FLAG == %s\n\n", flag);
 	fprintf(stdout, "----Original adjList----\n\n");
 	printAdjVerts(adjList, nodeCount);
@@ -123,9 +138,8 @@ int main(int argc, char **argv)
 		if (nodeCount <= 20)
 			printAdjMatrix(makeAdjMatrix(adjList, nodeCount), nodeCount);
 	}
-
-	//free allocated memory--------------------------------------------------------
-	
+*/
+	//free allocated memory-------------------
 	//for(int i = 0; i < nodeCount; i++)
 		//if(adjList[i] != NULL)
 			//free(adjList[i]);

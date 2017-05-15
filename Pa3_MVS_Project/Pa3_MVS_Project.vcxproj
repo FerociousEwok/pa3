@@ -110,11 +110,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="dfsPhase2.h" />
     <ClInclude Include="dfsTrace1.h" />
     <ClInclude Include="intVec.h" />
     <ClInclude Include="loadGraph.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="dfsPhase2.c" />
     <ClCompile Include="dfsTrace1.c" />
     <ClCompile Include="scc03.c" />
     <ClCompile Include="intVec.c" />
