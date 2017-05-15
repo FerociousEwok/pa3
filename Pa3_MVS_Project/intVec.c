@@ -2,7 +2,7 @@
 intVec.c
 Ben Donn
 bdonn
-pa2
+pa3
 The following is the Integer vector node adt.
 */
 #include <stdio.h>
@@ -94,6 +94,15 @@ The following is the Integer vector node adt.
 		newVec->capacity = intInitCap;
 		return newVec;
 	}
+	IntVec intMakeEmptyVecN(int np1)
+	{
+		IntVec returnVal;
+		if (np1 < 0)//assumed precondition
+			return EXIT_FAILURE;
+		returnVal = intMakeEmptyVec();
+		returnVal->capacity = np1;
+		return returnVal;
+	}
 
 	/* Manipulation Procedures
 	*/
@@ -143,7 +152,7 @@ The following is the Integer vector node adt.
 	*    Also, for all 0 <= i < /sz/-1: intData(myVec, i) is unchanged.
 	*    Also, intCapacity(myVec) is unchanged.
 	*/
-	void intVecPop(IntVec myVec) //fixed
+	void intVecPop(IntVec myVec)
 	{
 		if (myVec == NULL) //if precondition fails.
 		{

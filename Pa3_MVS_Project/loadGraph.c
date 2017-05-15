@@ -7,7 +7,7 @@
 loadGraph.c
 Ben Donn
 bdonn
-pa2
+pa3
 */
 int globalEdgeCount = 0;
 
