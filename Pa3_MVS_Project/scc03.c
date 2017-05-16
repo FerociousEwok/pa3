@@ -57,6 +57,8 @@ It is better to copy working code than debug both versions.
 Aside from intVec.h, intVec.c, scc03.c and scc03, the names of files,
 functions and arrays should be understandable but do NOT need to be
 strictly the same as this handout.
+
+TODO: make dfsData struct to store information in multiple arrays in the struct.
 */
 
 
@@ -68,11 +70,14 @@ strictly the same as this handout.
 #include "dfsTrace1.h"
 #include "dfsPhase2.h"
 int nodeCount = 0;
-IntVec finishStk1;
-char *color;
+//IntVec finishStk1; should be in dfsTrace1.c struct now
+//char *color; should be in dfsTrace1.c struct now
+
+
 
 void findSCCs()
 {
+	IntVec *adjListT;//transposed
 
 }
 
@@ -84,6 +89,7 @@ int main(int argc, char **argv)
 	char *readMode = "r+";
 	IntVec *adjList;
 	char *flag = "default";
+	dfsData dfsInfo;
 	
 	int flagCheckOne = 0, flagCheckTwo = 0;
 	int** adjMatrix;
@@ -123,10 +129,9 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
-	finishStk1 = intMakeEmptyVecN(nodeCount);//news
-	color = calloc(nodeCount, sizeof(char));
-	for (int i = 1; i <= nodeCount; i++)
-		color[i] = "W";
+
+//Todo: Change below code to function for new dfsData obj implementation--------------
+	
 
 	adjList = loadGraph(inputFile, nodeCount, flag);
 	adjMatrix = makeAdjMatrix(adjList, nodeCount);
@@ -134,7 +139,12 @@ int main(int argc, char **argv)
 	if (nodeCount <= 20)
 		printAdjMatrix(adjMatrix, nodeCount);
 
-	
+	dfsInfo = makeNewDfsDataObj(nodeCount);
+	dfsTrace1(adjList, 1, dfsInfo);//dfs starting at node 1
+
+
+
+
 
 
 /*MAIN FOR PA2

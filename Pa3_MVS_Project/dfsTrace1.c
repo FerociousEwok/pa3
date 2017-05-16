@@ -5,25 +5,49 @@ adjacency IntVecs.
 
 */
 #include <string.h>
-#include "intVec.h";
-#include "scc03.c";
+#include "intVec.h"
+#include "scc03.c"
+
+/**/
+struct dfsDataObj
+{
+	int *discoverTime, *finishTime, *parent;
+	IntVec *finishStk;
+	char *color;
+};
+
+/**/
+dfsData makeNewDfsDataObj(int nodeCount)
+{
+	dfsData dfsObj = calloc(1, sizeof(dfsData));
+	dfsObj->discoverTime = calloc(nodeCount, sizeof(int));
+	dfsObj->finishTime = calloc(nodeCount, sizeof(int));
+	dfsObj->parent = calloc(nodeCount, sizeof(int));
+	dfsObj->finishStk = intMakeEmptyVecN(nodeCount);//calloc( nodeCount, sizeof(IntVec));
+	dfsObj->color = calloc(nodeCount, sizeof(char));
+	for (int i = 1; i <= nodeCount; i++)
+		dfsObj->color[i] = 'W';
+	return dfsObj;
+}
 
 
-void dfsTrace1(IntVec adjVertices[], int v) //v is the current node
+
+/**/
+void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo) //v is the current node
 {
 	
 	IntVec vAdjs = adjVertices[v];
 	int remAdjs, w;
-	color[v] = "G";
+	dfsInfo->color[v] = 'G';
 	remAdjs = intSize(vAdjs);
 
 	while (remAdjs > 0)
 	{
 		remAdjs--;
 		w = intData(vAdjs, remAdjs);
-		if (strcmp(color[w], "W"))
+		if (strcmp(dfsInfo->color[w], 'W'))
 		{
-			dfs(adjVertices, w);
+			dfsTrace1(adjVertices, w, dfsInfo);
 		}
 		else
 		{
@@ -31,7 +55,7 @@ void dfsTrace1(IntVec adjVertices[], int v) //v is the current node
 		}
 		//remAdj = rest(remAdj); not sure what this means.
 	}
-	color[v] = "B";
-	intVecPush(finishStk1, adjVertices[v]);
+	dfsInfo->color[v] = 'B';
+	intVecPush(dfsInfo->finishStk, adjVertices[v]);
 	return;
 }
