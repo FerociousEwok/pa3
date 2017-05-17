@@ -4,4 +4,4 @@
 */
 
 void dfsPhase2();
-void dfsSweepT();
+int dfsSweepT();

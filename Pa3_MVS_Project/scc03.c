@@ -75,10 +75,20 @@ int nodeCount = 0;
 
 
 
-void findSCCs()
+IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//this function should handle printing.
 {
+	IntVec *roots;//where the scc answer will go.
+	int tempRoot = -1;
 	IntVec *adjListT;//transposed
+	dfsData dfsInfoT;//transposed
+	adjListT = calloc(nodeCount, sizeof(IntVec));
+	dfsInfoT = makeNewDfsDataObj(nodeCount);
+	roots = calloc(nodeCount, sizeof(IntVec));
 
+	adjListT = transposeGraph(adjList, nodeCount);
+
+
+	return roots;
 }
 
 int main(int argc, char **argv)
@@ -90,6 +100,8 @@ int main(int argc, char **argv)
 	IntVec *adjList;
 	char *flag = "default";
 	dfsData dfsInfo;
+	IntVec *sccList;
+	
 	
 	int flagCheckOne = 0, flagCheckTwo = 0;
 	int** adjMatrix;
@@ -140,9 +152,13 @@ int main(int argc, char **argv)
 		printAdjMatrix(adjMatrix, nodeCount);
 
 	dfsInfo = makeNewDfsDataObj(nodeCount);
+	
+	
 	dfsTrace1(adjList, 1, dfsInfo);//dfs starting at node 1
+	printDfsData(dfsInfo);
 
-
+	sccList = calloc(nodeCount, sizeof(IntVec));
+	sccList = findSCCs(adjList, dfsInfo);
 
 
 

@@ -12,6 +12,7 @@ adjacency IntVecs.
 struct dfsDataObj
 {
 	int *discoverTime, *finishTime, *parent;
+	int timeCount;
 	IntVec *finishStk;
 	char *color;
 };
@@ -27,10 +28,15 @@ dfsData makeNewDfsDataObj(int nodeCount)
 	dfsObj->color = calloc(nodeCount, sizeof(char));
 	for (int i = 1; i <= nodeCount; i++)
 		dfsObj->color[i] = 'W';
+	dfsObj->timeCount = 0;
 	return dfsObj;
 }
 
+/**/
+void printDfsData(dfsData dfsInfo)
+{
 
+}
 
 /**/
 void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo) //v is the current node
@@ -38,6 +44,9 @@ void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo) //v is the current 
 	
 	IntVec vAdjs = adjVertices[v];
 	int remAdjs, w;
+
+	dfsInfo->timeCount += 1;
+	dfsInfo->discoverTime[v] = dfsInfo->timeCount;
 	dfsInfo->color[v] = 'G';
 	remAdjs = intSize(vAdjs);
 
@@ -55,6 +64,7 @@ void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo) //v is the current 
 		}
 		//remAdj = rest(remAdj); not sure what this means.
 	}
+	dfsInfo->finishTime[v] = dfsInfo->timeCount;
 	dfsInfo->color[v] = 'B';
 	intVecPush(dfsInfo->finishStk, adjVertices[v]);
 	return;

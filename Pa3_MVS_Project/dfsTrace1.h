@@ -7,7 +7,7 @@
 #define C101Trace
 /*
 */
-void dfsTrace1(IntVec adjVertices[], int v);
+void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo);
 
 /*
 */
@@ -15,5 +15,5 @@ typedef struct dfsDataObj * dfsData;
 
 dfsData makeNewDfsDataObj(int nodeCount);
 
-
+void printDfsData(dfsData dfsInfo);
 #endif
