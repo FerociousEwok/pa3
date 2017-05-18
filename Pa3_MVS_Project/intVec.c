@@ -98,7 +98,7 @@ The following is the Integer vector node adt.
 	{
 		IntVec returnVal;
 		if (np1 < 0)//assumed precondition
-			return EXIT_FAILURE;
+			exit(EXIT_FAILURE);
 		returnVal = intMakeEmptyVec();
 		returnVal->capacity = np1;
 		return returnVal;

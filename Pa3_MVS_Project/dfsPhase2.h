@@ -3,5 +3,5 @@
 
 */
 
-void dfsPhase2(IntVec *adjList, dfsData dfsInfo);
+IntVec* dfsPhase2(IntVec *adjList, dfsData dfsInfo);
 int dfsSweepT(dfsData dfsInfo);

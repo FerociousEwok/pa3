@@ -83,15 +83,17 @@ IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//Todo: fill roots corectly
 	dfsData dfsInfoT;//transposed
 	adjListT = calloc(nodeCount, sizeof(IntVec));
 	dfsInfoT = makeNewDfsDataObj(nodeCount);
-	roots = calloc(nodeCount, sizeof(IntVec));
+
+
+	roots = intMakeEmptyVec();
 
 	adjListT = transposeGraph(adjList, nodeCount);
 	fprinft(stdout, "\n-----Transpose-----\n");
 	printAdjVerts(adjListT, nodeCount);
 	printAdjMatrix(makeAdjMatrix(adjListT, nodeCount), nodeCount);//formating my be needed in these lines.
 
-	dfsPhase2(adjListT, dfsInfoT);//------Formating probably needed for the below lines----
-	printDfsData2(dfsInfoT);
+	roots = dfsPhase2(adjListT, dfsInfoT);//------Formating probably needed for the below lines----
+	printDfsData2(dfsInfoT, roots);
 	return roots;
 }
 
@@ -105,6 +107,7 @@ int main(int argc, char **argv)
 	char *flag = "default", *userInput = "";
 	dfsData dfsInfo;
 	IntVec *sccList;
+	
 	
 	
 	int flagCheckOne = 0, flagCheckTwo = 0, newRoot = 0;
@@ -160,10 +163,19 @@ int main(int argc, char **argv)
 	newRoot = dfsSweepT(dfsInfo);
 	while (newRoot != -1)
 	{
+
 		dfsTrace1(adjList, newRoot, dfsInfo);//dfs starting at node newRoot
 		newRoot = dfsSweepT(dfsInfo);
 	}
 	printDfsData(dfsInfo);
+	fprintf(stdout, "\nFSTK: ");
+	//while (intSize(getFinishStk(dfsInfo)) != 0)
+	for(int i = 0; i< intSize(getFinishStk(dfsInfo)); i++)
+	{
+		fprintf(stdout, "%s  ", intData(getFinishStk(dfsInfo), i));
+	}
+	fprintf(stdout, "\n");
+
 	sccList = calloc(nodeCount, sizeof(IntVec));
 	sccList = findSCCs(adjList, dfsInfo);
 
