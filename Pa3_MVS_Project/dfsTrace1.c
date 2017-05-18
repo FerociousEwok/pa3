@@ -38,6 +38,11 @@ void printDfsData(dfsData dfsInfo)
 
 }
 
+void printDfsData2(dfsData dfsInfoT)//for the scc
+{
+
+}
+
 /**/
 void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo) //v is the current node
 {
@@ -60,7 +65,7 @@ void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo) //v is the current 
 		}
 		else
 		{
-
+			//implement recording that a cycle was reached here.
 		}
 		//remAdj = rest(remAdj); not sure what this means.
 	}

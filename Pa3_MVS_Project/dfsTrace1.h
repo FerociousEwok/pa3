@@ -16,4 +16,6 @@ typedef struct dfsDataObj * dfsData;
 dfsData makeNewDfsDataObj(int nodeCount);
 
 void printDfsData(dfsData dfsInfo);
+
+void printDfsData2(dfsData dfsInfoT);
 #endif

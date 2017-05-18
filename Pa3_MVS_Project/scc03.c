@@ -75,10 +75,10 @@ int nodeCount = 0;
 
 
 
-IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//this function should handle printing.
+IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//Todo: fill roots corectly
 {
 	IntVec *roots;//where the scc answer will go.
-	int tempRoot = -1;
+	int tempRoot = -1, newRoot2 = -1;
 	IntVec *adjListT;//transposed
 	dfsData dfsInfoT;//transposed
 	adjListT = calloc(nodeCount, sizeof(IntVec));
@@ -86,8 +86,12 @@ IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//this function should handle 
 	roots = calloc(nodeCount, sizeof(IntVec));
 
 	adjListT = transposeGraph(adjList, nodeCount);
+	fprinft(stdout, "\n-----Transpose-----\n");
+	printAdjVerts(adjListT, nodeCount);
+	printAdjMatrix(makeAdjMatrix(adjListT, nodeCount), nodeCount);//formating my be needed in these lines.
 
-
+	dfsPhase2(adjListT, dfsInfoT);//------Formating probably needed for the below lines----
+	printDfsData2(dfsInfoT);
 	return roots;
 }
 
@@ -98,12 +102,12 @@ int main(int argc, char **argv)
 	char *tempInputString = "";
 	char *readMode = "r+";
 	IntVec *adjList;
-	char *flag = "default";
+	char *flag = "default", *userInput = "";
 	dfsData dfsInfo;
 	IntVec *sccList;
 	
 	
-	int flagCheckOne = 0, flagCheckTwo = 0;
+	int flagCheckOne = 0, flagCheckTwo = 0, newRoot = 0;
 	int** adjMatrix;
 
 	if (argc == 1) //no command line argument
@@ -119,6 +123,15 @@ int main(int argc, char **argv)
 		flag = argv[1];
 		tempInputString = argv[2];
 	}
+	if (strcmp(tempInputString, "-") == 0)
+	{		
+		fprintf(stdout, "\nPlease type a file name(Up to 25 characters): ");
+		userInput = calloc(25, sizeof(char));
+		userInput = getc(stdin);//might throw if input out of expected range.
+		tempInputString = userInput;
+		fprintf(stdout, "\n");
+	}
+
 	inputFile = fopen(tempInputString, readMode);
 	if (inputFile == 0)
 	{
@@ -126,10 +139,6 @@ int main(int argc, char **argv)
 		getc(stdin);
 		exit(1);
 	}
-	/*NEW COMMAND LINE CHECK:(if user wants to type in file name)
-
-	*/
-
 
 	nodeCount = getNodeCount(inputFile);
 	flagCheckOne = strcmp(flag, "-U");
@@ -141,10 +150,6 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
-
-//Todo: Change below code to function for new dfsData obj implementation--------------
-	
-
 	adjList = loadGraph(inputFile, nodeCount, flag);
 	adjMatrix = makeAdjMatrix(adjList, nodeCount);
 	printAdjVerts(adjList, nodeCount);
@@ -152,37 +157,16 @@ int main(int argc, char **argv)
 		printAdjMatrix(adjMatrix, nodeCount);
 
 	dfsInfo = makeNewDfsDataObj(nodeCount);
-	
-	
-	dfsTrace1(adjList, 1, dfsInfo);//dfs starting at node 1
+	newRoot = dfsSweepT(dfsInfo);
+	while (newRoot != -1)
+	{
+		dfsTrace1(adjList, newRoot, dfsInfo);//dfs starting at node newRoot
+		newRoot = dfsSweepT(dfsInfo);
+	}
 	printDfsData(dfsInfo);
-
 	sccList = calloc(nodeCount, sizeof(IntVec));
 	sccList = findSCCs(adjList, dfsInfo);
 
-
-
-
-/*MAIN FOR PA2
-	fprintf(stdout, "FLAG == %s\n\n", flag);
-	fprintf(stdout, "----Original adjList----\n\n");
-	printAdjVerts(adjList, nodeCount);
-	if (nodeCount <= 20)
-		printAdjMatrix(makeAdjMatrix(adjList, nodeCount), nodeCount);
-	for (int i = 0; i < 2; i++) //run twice; second transpose
-	{
-		adjList = transposeGraph(adjList, nodeCount); //adjList now transposedAdjList.
-		i == 0? fprintf(stdout, "----First Transpose----\n\n")
-			: fprintf(stdout, "----SecondTranspose----\n\n");
-		printAdjVerts(adjList, nodeCount);
-		if (nodeCount <= 20)
-			printAdjMatrix(makeAdjMatrix(adjList, nodeCount), nodeCount);
-	}
-*/
-	//free allocated memory-------------------
-	//for(int i = 0; i < nodeCount; i++)
-		//if(adjList[i] != NULL)
-			//free(adjList[i]);
 	fprintf(stdout, "Program completed with no errors, Press any key to exit: ");
 	getc(stdin);
 	return EXIT_SUCCESS;
