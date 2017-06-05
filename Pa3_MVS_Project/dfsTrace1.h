@@ -13,7 +13,7 @@
 */
 typedef struct dfsDataObj * dfsData;
 
-void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo);
+void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo, IntVec *roots);
 
 dfsData makeNewDfsDataObj(int nodeCount);
 

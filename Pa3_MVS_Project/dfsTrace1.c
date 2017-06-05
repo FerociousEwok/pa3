@@ -68,7 +68,7 @@ void printDfsData2(dfsData dfsInfoT, IntVec* roots)//for the scc
 }
 
 /**/
-void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo) //v is the current node
+void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo, IntVec *roots) //v is the current node
 {
 	
 	IntVec vAdjs = adjVertices[v];
@@ -86,7 +86,7 @@ void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo) //v is the current 
 		if (strcmp(dfsInfo->color[w], 'W'))
 		{
 			dfsInfo->parent[w] = v;
-			dfsTrace1(adjVertices, w, dfsInfo);
+			dfsTrace1(adjVertices, w, dfsInfo, roots);
 		}
 		else
 		{

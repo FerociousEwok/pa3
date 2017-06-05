@@ -12,14 +12,21 @@ int rootCount = 0;
 IntVec* dfsPhase2(IntVec *adjList, dfsData dfsInfo)
 {
 	IntVec *roots;
-	roots = makeEmtpyVec();
+	roots = calloc(nodeCount + 1, sizeof(IntVec));
+	/*only do this for roots
+	for (int i = 0; i <= nodeCount; i++)
+	{
+		roots[i] = makeEmtpyVec();
+	}
+	*/
 	int newRoot = 0;
 
 	newRoot = dfsSweepT(dfsInfo);
 	while (newRoot != -1)
 	{
-		intVecPush(roots, newRoot);
-		dfsTrace1(adjList, newRoot, dfsInfo);
+		roots[newRoot] = intMakeEmptyVec();
+		//intVecPush(roots, newRoot); Replace with proper roots storage; 6/4 5pm-------------------------------------
+		dfsTrace1(adjList, newRoot, dfsInfo, roots);
 		newRoot = dfsSweepT(dfsInfo);
 	}
 	//process dfsInfo and into roots (type IntVec*)

@@ -75,7 +75,7 @@ int nodeCount = 0;
 
 
 
-IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//Todo: fill roots corectly
+IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//Todo: 2 things, 2 comments.; Also, dfs1Trace must take parameter roots also.
 {
 	IntVec *roots;//where the scc answer will go.
 	int tempRoot = -1, newRoot2 = -1;
@@ -84,8 +84,13 @@ IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//Todo: fill roots corectly
 	adjListT = calloc(nodeCount, sizeof(IntVec));
 	dfsInfoT = makeNewDfsDataObj(nodeCount);
 
-
-	roots = intMakeEmptyVec();
+	roots = calloc(nodeCount + 1, sizeof(IntVec));
+	/* Vector should only be made if its a root, handle this in dfsPhase2.c
+	for (int i = 1; i <= nodeCount; i++)
+	{
+		roots[i] = intMakeEmptyVec();
+	}
+	*/
 
 	adjListT = transposeGraph(adjList, nodeCount);
 	fprinft(stdout, "\n-----Transpose-----\n");
@@ -103,7 +108,7 @@ int main(int argc, char **argv)
 	FILE *inputFile = NULL;
 	char *tempInputString = "";
 	char *readMode = "r+";
-	IntVec *adjList;
+	IntVec *adjList, *roots1;
 	char *flag = "default", *userInput = "";
 	dfsData dfsInfo;
 	IntVec *sccList;
@@ -159,12 +164,13 @@ int main(int argc, char **argv)
 	if (nodeCount <= 20)
 		printAdjMatrix(adjMatrix, nodeCount);
 
+	roots1 = calloc(nodeCount + 1, sizeof(IntVec));
 	dfsInfo = makeNewDfsDataObj(nodeCount);
 	newRoot = dfsSweepT(dfsInfo);
 	while (newRoot != -1)
 	{
 
-		dfsTrace1(adjList, newRoot, dfsInfo);//dfs starting at node newRoot
+		dfsTrace1(adjList, newRoot, dfsInfo, roots1);//dfs starting at node newRoot
 		newRoot = dfsSweepT(dfsInfo);
 	}
 	printDfsData(dfsInfo);
