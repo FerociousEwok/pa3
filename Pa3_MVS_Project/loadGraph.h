@@ -5,8 +5,7 @@ bdonn
 pa3
 */
 
-#ifndef C101loadGraph
-#define C101loadGraph
+
 /*
 
 */
@@ -40,5 +39,3 @@ int getNodeCount(FILE *inputFile);
 
 */
 int getEdgeCount(IntVec *adjList);
-
-#endif

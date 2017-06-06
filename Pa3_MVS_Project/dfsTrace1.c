@@ -5,17 +5,19 @@ adjacency IntVecs.
 
 */
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "intVec.h"
-#include "scc03.c"
+#include "dfsTrace1.h"
+#include "scc03.h"
+
+//#include "scc03.c" think this causes compile error.
 
 /**/
-struct dfsDataObj
-{
-	int *discoverTime, *finishTime, *parent;
-	int timeCount;
-	IntVec *finishStk;
-	char *color;
-};
+typedef struct dfsDataObj dfsDataObj;
+//typedef struct dfsDataObj *dfsData;
+
+
 
 IntVec* getFinishStk(dfsData dfsInfo)
 {
@@ -29,7 +31,7 @@ dfsData makeNewDfsDataObj(int nodeCount)
 	dfsObj->discoverTime = calloc(nodeCount, sizeof(int));
 	dfsObj->finishTime = calloc(nodeCount, sizeof(int));
 	dfsObj->parent = calloc(nodeCount, sizeof(int));
-	dfsObj->finishStk = intMakeEmptyVecN(nodeCount);//calloc( nodeCount, sizeof(IntVec));
+	*(dfsObj->finishStk) = intMakeEmptyVecN(nodeCount);//memory pointed to by finishStk set to be a vector obj
 	dfsObj->color = calloc(nodeCount, sizeof(char));
 	for (int i = 1; i <= nodeCount; i++)
 		dfsObj->color[i] = 'W';
@@ -45,7 +47,7 @@ void printDfsData(dfsData dfsInfo)
 	fprintf(stdout, "\nV    color  dTime  fTime  parent\n");
 	for (int i = 1; i <= nodeCount; i++)//for each vector i.
 	{
-		fprintf(stdout, "%d    %s    %d    %d    %d", i, dfsInfo->color[i], dfsInfo->discoverTime[i], dfsInfo->finishTime[i], dfsInfo->parent[i]);
+		fprintf(stdout, "%d    %c    %d    %d    %d", i, dfsInfo->color[i], dfsInfo->discoverTime[i], dfsInfo->finishTime[i], dfsInfo->parent[i]);
 	}
 	fprintf(stdout, "\n");
 }
@@ -62,17 +64,18 @@ void printDfsData2(dfsData dfsInfoT, IntVec* roots)//for the scc
 			for(int z = 1; z<= )
 		}
 		*/
-		fprintf(stdout, "%d    %s    %d    %d    %d    %d\n", i, dfsInfoT->color[i], dfsInfoT->discoverTime[i], dfsInfoT->finishTime[i], dfsInfoT->parent[i], 69);//temp value for root till implemented
+		fprintf(stdout, "%d    %c    %d    %d    %d    %d\n", i, dfsInfoT->color[i], dfsInfoT->discoverTime[i], dfsInfoT->finishTime[i], dfsInfoT->parent[i], 69);//temp value for root till implemented
 	}
 	fprintf(stdout, "\n");
 }
 
 /**/
-void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo, IntVec *roots) //v is the current node
+void dfsTrace1(IntVec* adjVertices, int v, dfsData dfsInfo, IntVec *roots) //v is the current node
 {
 	
 	IntVec vAdjs = adjVertices[v];
 	int remAdjs, w;
+	
 
 	dfsInfo->timeCount += 1;
 	dfsInfo->discoverTime[v] = dfsInfo->timeCount;
@@ -83,7 +86,7 @@ void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo, IntVec *roots) //v 
 	{
 		remAdjs--;
 		w = intData(vAdjs, remAdjs);
-		if (strcmp(dfsInfo->color[w], 'W'))
+		if (dfsInfo->color[w] == 'W')//compares two characters by asci value
 		{
 			dfsInfo->parent[w] = v;
 			dfsTrace1(adjVertices, w, dfsInfo, roots);
@@ -96,6 +99,6 @@ void dfsTrace1(IntVec adjVertices[], int v, dfsData dfsInfo, IntVec *roots) //v 
 	}
 	dfsInfo->finishTime[v] = dfsInfo->timeCount;
 	dfsInfo->color[v] = 'B';
-	intVecPush(dfsInfo->finishStk, v);
+	intVecPush(*(dfsInfo->finishStk), v);
 	return;
 }

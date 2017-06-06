@@ -116,6 +116,7 @@
     <ClInclude Include="dfsTrace1.h" />
     <ClInclude Include="intVec.h" />
     <ClInclude Include="loadGraph.h" />
+    <ClInclude Include="scc03.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dfsPhase2.c" />
