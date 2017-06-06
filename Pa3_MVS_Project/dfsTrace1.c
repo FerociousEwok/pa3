@@ -44,10 +44,10 @@ dfsData makeNewDfsDataObj(int nodeCount)
 /**/
 void printDfsData(dfsData dfsInfo)
 {
-	fprintf(stdout, "\nV    color  dTime  fTime  parent\n");
+	fprintf(stdout, "\nV    color  dTime     fTime  parent\n");
 	for (int i = 1; i <= nodeCount; i++)//for each vector i.
 	{
-		fprintf(stdout, "%d    %c    %d    %d    %d", i, dfsInfo->color[i], dfsInfo->discoverTime[i], dfsInfo->finishTime[i], dfsInfo->parent[i]);
+		fprintf(stdout, "%d    %c        %d        %d        %d\n", i, dfsInfo->color[i], dfsInfo->discoverTime[i], dfsInfo->finishTime[i], dfsInfo->parent[i]);
 	}
 	fprintf(stdout, "\n");
 }
@@ -64,13 +64,28 @@ void printDfsData2(dfsData dfsInfoT, IntVec* roots)//for the scc
 			for(int z = 1; z<= )
 		}
 		*/
-		fprintf(stdout, "%d    %c    %d    %d    %d    %d\n", i, dfsInfoT->color[i], dfsInfoT->discoverTime[i], dfsInfoT->finishTime[i], dfsInfoT->parent[i], 69);//temp value for root till implemented
+		fprintf(stdout, "%d    %c        %d        %d        %d        ", i, dfsInfoT->color[i], dfsInfoT->discoverTime[i], dfsInfoT->finishTime[i], dfsInfoT->parent[i]);
+		
+		for (int j = 1; j <= nodeCount; j++)
+		{
+			if(roots[j] != NULL)//for each root of the dfs tree
+			{
+				for (int z = 0; z < intSize(roots[j]); z++)//for each value in current roots data array
+				{
+					if (i == intData(roots[j], z))//if current vector i is a root of j
+					{
+						fprintf(stdout, "%d", j);
+					}
+				}
+			}
+		}
+		fprintf(stdout, "\n");
 	}
 	fprintf(stdout, "\n");
 }
 
 /**/
-void dfsTrace1(IntVec* adjVertices, int v, dfsData dfsInfo, IntVec *roots) //v is the current node
+void dfsTrace1(IntVec* adjVertices, int v, dfsData dfsInfo, IntVec *roots, int currentRoot) //v is the current node
 {
 	
 	IntVec vAdjs = adjVertices[v];
@@ -82,6 +97,8 @@ void dfsTrace1(IntVec* adjVertices, int v, dfsData dfsInfo, IntVec *roots) //v i
 	dfsInfo->color[v] = 'G';
 	remAdjs = intSize(vAdjs);
 
+	intVecPush(roots[currentRoot], v);
+
 	while (remAdjs > 0)
 	{
 		remAdjs--;
@@ -89,7 +106,7 @@ void dfsTrace1(IntVec* adjVertices, int v, dfsData dfsInfo, IntVec *roots) //v i
 		if (dfsInfo->color[w] == 'W')//compares two characters by asci value
 		{
 			dfsInfo->parent[w] = v;
-			dfsTrace1(adjVertices, w, dfsInfo, roots);
+			dfsTrace1(adjVertices, w, dfsInfo, roots, currentRoot);
 		}
 		else
 		{
@@ -97,6 +114,7 @@ void dfsTrace1(IntVec* adjVertices, int v, dfsData dfsInfo, IntVec *roots) //v i
 		}
 		//remAdj = rest(remAdj); not sure what this means.
 	}
+	dfsInfo->timeCount += 1;
 	dfsInfo->finishTime[v] = dfsInfo->timeCount;
 	dfsInfo->color[v] = 'B';
 	intVecPush(*(dfsInfo->finishStk), v);

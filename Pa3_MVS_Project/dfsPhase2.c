@@ -30,7 +30,7 @@ IntVec* dfsPhase2(IntVec *adjList, dfsData dfsInfo)
 	{
 		roots[newRoot] = intMakeEmptyVec();
 		//intVecPush(roots, newRoot); Replace with proper roots storage; 6/4 5pm-------------------------------------
-		dfsTrace1(adjList, newRoot, dfsInfo, roots);
+		dfsTrace1(adjList, newRoot, dfsInfo, roots, newRoot);
 		newRoot = dfsSweepT(dfsInfo);
 	}
 	//process dfsInfo and into roots (type IntVec*)

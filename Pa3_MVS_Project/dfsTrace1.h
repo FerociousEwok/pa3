@@ -10,7 +10,7 @@ struct dfsDataObj {
 
 typedef struct dfsDataObj * dfsData;
 
-void dfsTrace1(IntVec* adjVertices, int v, dfsData dfsInfo, IntVec* roots);//changed first intvec to intvec*
+void dfsTrace1(IntVec* adjVertices, int v, dfsData dfsInfo, IntVec* roots, int currentRoot);//changed first intvec to intvec*
 
 dfsData makeNewDfsDataObj(int nodeCount);
 

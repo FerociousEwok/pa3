@@ -37,7 +37,7 @@ IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//Todo: 2 things, 2 comments.;
 
 	roots = calloc(nodeCount + 1, sizeof(IntVec));
 
-	printf("\nmade it to findSCCs()\n");
+	
 	/* Vector should only be made if its a root, handle this in dfsPhase2.c
 	for (int i = 1; i <= nodeCount; i++)
 	{
@@ -51,6 +51,7 @@ IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//Todo: 2 things, 2 comments.;
 	printAdjMatrix(makeAdjMatrix(adjListT, nodeCount), nodeCount);//formating my be needed in these lines.
 
 	roots = dfsPhase2(adjListT, dfsInfoT);//------Formating probably needed for the below lines----
+	
 	printDfsData2(dfsInfoT, roots);
 	return roots;
 }
@@ -123,8 +124,8 @@ int main(int argc, char **argv)
 	newRoot = dfsSweepT(dfsInfo);
 	while (newRoot != -1)//infinite loop here i think.
 	{
-
-		dfsTrace1(adjList, newRoot, dfsInfo, roots1);//dfs starting at node newRoot
+		roots1[newRoot] = intMakeEmptyVec();
+		dfsTrace1(adjList, newRoot, dfsInfo, roots1, newRoot);//dfs starting at node newRoot
 		newRoot = dfsSweepT(dfsInfo);
 	}
 	printDfsData(dfsInfo);
