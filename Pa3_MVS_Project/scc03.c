@@ -36,6 +36,8 @@ IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//Todo: 2 things, 2 comments.;
 	dfsInfoT = makeNewDfsDataObj(nodeCount);
 
 	roots = calloc(nodeCount + 1, sizeof(IntVec));
+
+	printf("\nmade it to findSCCs()\n");
 	/* Vector should only be made if its a root, handle this in dfsPhase2.c
 	for (int i = 1; i <= nodeCount; i++)
 	{
@@ -119,7 +121,7 @@ int main(int argc, char **argv)
 	roots1 = calloc(nodeCount + 1, sizeof(IntVec));
 	dfsInfo = makeNewDfsDataObj(nodeCount);
 	newRoot = dfsSweepT(dfsInfo);
-	while (newRoot != -1)
+	while (newRoot != -1)//infinite loop here i think.
 	{
 
 		dfsTrace1(adjList, newRoot, dfsInfo, roots1);//dfs starting at node newRoot

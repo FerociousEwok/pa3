@@ -38,7 +38,7 @@ IntVec* dfsPhase2(IntVec *adjList, dfsData dfsInfo)
 }
 
 
-int dfsSweepT(dfsData dfsInfo)//return the int value of a undiscovered vertex.
+int dfsSweepT(dfsData dfsInfo)//may be infinite loop here.
 {
 	
 	int tempReturn = -1;
@@ -53,6 +53,6 @@ int dfsSweepT(dfsData dfsInfo)//return the int value of a undiscovered vertex.
 		}
 		i++;
 		if (i > nodeCount)
-			return 0;
+			return tempReturn;
 	}
 }
