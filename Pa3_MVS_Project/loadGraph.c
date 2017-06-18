@@ -13,10 +13,10 @@ int globalEdgeCount = 0;
 
 int** makeAdjMatrix(IntVec *adjList, int nodeCount)
 {
-	int** adjMatrix = calloc(nodeCount, sizeof(int *));
+	int** adjMatrix = calloc(nodeCount+1, sizeof(int *));
 	int dataValue = 0;
 	for (int i = 0; i <= nodeCount; i++)
-		adjMatrix[i] = calloc(nodeCount, sizeof(int));
+		adjMatrix[i] = calloc(nodeCount+1, sizeof(int));
 
 	for (int i = 1; i <= nodeCount; i++)//for each node. i.e. each index of array.
 	{
@@ -42,7 +42,7 @@ int** makeAdjMatrix(IntVec *adjList, int nodeCount)
 IntVec* transposeGraph(IntVec* adjList, int n)
 {
 	int data = 0;
-	IntVec* transposedList = calloc(n+1, sizeof(IntVec));
+	IntVec *transposedList = calloc(n+1, sizeof(IntVec));
 	for (int i = 0; i <= n; i++) //initialize a new array of vectors.
 	{
 		transposedList[i] = intMakeEmptyVec();
@@ -118,20 +118,19 @@ The below function callocs an array of vectors and fills it based on inputFile
 IntVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
 {
 	//local variables
-	int tempInt = 0, dataValue = 0, equal = 0;
-	float weight = 0.00;
-	IntVec *tempList = NULL;
-	char *lineOfFile, *tempToken,
-		*tempDataValue, *tempWeight;
+	int *tempInt, *dataValue, equal = 0;
+	float *weight;
+	IntVec *tempList;
+	char *lineOfFile;
 	//begin the calloc's-------------------------------------------------
 	lineOfFile = calloc(30, sizeof(char));
-	tempToken = calloc(30, sizeof(char));
-	tempDataValue = calloc(30, sizeof(char));
-	tempWeight = calloc(15, sizeof(char));
-
+	weight = calloc(1, sizeof(float));
+	tempInt = calloc(1, sizeof(int));
+	dataValue = calloc(1, sizeof(int));
 	
 	tempList = calloc(nodeCount + 1, sizeof(IntVec));
 	for (int i = 0; i <= nodeCount; i++)
+
 		tempList[i] = intMakeEmptyVec();
 	//below is some input file cleanup
 	for (int i = 0; i < 1; i++)
@@ -140,19 +139,21 @@ IntVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
 	{
 		if (lineOfFile[0] == '\n') //if fgets needed to clear newline character
 			fgets(lineOfFile, 20, inputFile);
-		sscanf(lineOfFile, "%s %s %s", tempToken, tempDataValue, tempWeight);
+		sscanf(lineOfFile, "%d %d %f", tempInt, dataValue, weight);
 
+		/*
 		tempInt = (int)tempToken[0] - (int)'0';
 		dataValue = (int)tempDataValue[0] - (int)'0';
 		if (!((float)tempWeight[0] == 0.00))
 			weight = (float)tempWeight[0] - (float)'0';
+		*/
 
-			intVecPush(tempList[tempInt], dataValue);
+			intVecPush(tempList[*tempInt], *dataValue);
 			globalEdgeCount++;
 			equal = strcmp(flag, "-U");
 			if (equal == 0) //if undirected
 			{
-				intVecPush(tempList[dataValue], tempInt);
+				intVecPush(tempList[*dataValue], *tempInt);
 				globalEdgeCount++;
 			}
 	}

@@ -10,8 +10,10 @@ pa3
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//#include "scc03.h"
+
 #include "intVec.h"
+
+#include "scc03.h"
 
 #include "loadGraph.h"
 
@@ -32,18 +34,12 @@ IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//Todo: 2 things, 2 comments.;
 	int tempRoot = -1, newRoot2 = -1;
 	IntVec *adjListT;//transposed
 	dfsData dfsInfoT;//transposed
-	adjListT = calloc(nodeCount, sizeof(IntVec));
+	adjListT = calloc(nodeCount+1, sizeof(IntVec));
 	dfsInfoT = makeNewDfsDataObj(nodeCount);
 
-	roots = calloc(nodeCount + 1, sizeof(IntVec));
+	//roots = calloc(nodeCount + 1, sizeof(IntVec));
 
 	
-	/* Vector should only be made if its a root, handle this in dfsPhase2.c
-	for (int i = 1; i <= nodeCount; i++)
-	{
-		roots[i] = intMakeEmptyVec();
-	}
-	*/
 
 	adjListT = transposeGraph(adjList, nodeCount);
 	fprintf(stdout, "\n-----Transpose-----\n");
@@ -53,24 +49,40 @@ IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//Todo: 2 things, 2 comments.;
 	roots = dfsPhase2(adjListT, dfsInfoT);//------Formating probably needed for the below lines----
 	
 	printDfsData2(dfsInfoT, roots);
+
+	for (int i = 1; i <= nodeCount; i++)
+	{
+		free(adjListT[i]);
+	}
+	free(adjListT);
+	
+	free(dfsInfoT->color);
+	free(dfsInfoT->discoverTime);
+	free(dfsInfoT->finishTime);
+	free(dfsInfoT->parent);
+	free(dfsInfoT->finishStk);
+	free(dfsInfoT);
+
 	return roots;
 }
 
-int main(int argc, char **argv)
+void main(int argc, char **argv)
 {
 	//variables
 	FILE *inputFile = NULL;
-	char *tempInputString = "";
-	char *readMode = "r+";
+	char *tempInputString="ThisIsBlankSpaceToHoldMemoeryblahblahblahblahblahblahblahblahblahblahblahblah";
+	const char *readMode = "r+";
 	IntVec *adjList, *roots1;
-	char *flag = "default", *userInput = "";
+	char *flag = "default", *userInput;
 	dfsData dfsInfo;
 	IntVec *sccList;
 	
-	
+	//Input Checking------------------------------------------
 	
 	int flagCheckOne = 0, flagCheckTwo = 0, newRoot = 0;
 	int** adjMatrix;
+
+	//tempInputString = calloc(100, sizeof(char));
 
 	if (argc == 1) //no command line argument
 	{
@@ -93,8 +105,9 @@ int main(int argc, char **argv)
 		scanf("%s", userInput);
 		tempInputString = userInput;
 		fprintf(stdout, "\n");
+		free(userInput);
 	}
-
+	
 	inputFile = fopen(tempInputString, readMode);
 	if (inputFile == 0)
 	{
@@ -113,34 +126,62 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
+	//Main function tasks here
+
 	adjList = loadGraph(inputFile, nodeCount, flag);
+	
 	adjMatrix = makeAdjMatrix(adjList, nodeCount);
 	printAdjVerts(adjList, nodeCount);
 	if (nodeCount <= 20)
 		printAdjMatrix(adjMatrix, nodeCount);
 
 	roots1 = calloc(nodeCount + 1, sizeof(IntVec));
+	for (int a = 1; a <= nodeCount; a++)
+		roots1[a] = intMakeEmptyVec();
+
 	dfsInfo = makeNewDfsDataObj(nodeCount);
 	newRoot = dfsSweepT(dfsInfo);
-	while (newRoot != -1)//infinite loop here i think.
+	while (newRoot != -1)
 	{
-		roots1[newRoot] = intMakeEmptyVec();
+		//roots1[newRoot] = intMakeEmptyVec();
 		dfsTrace1(adjList, newRoot, dfsInfo, roots1, newRoot);//dfs starting at node newRoot
 		newRoot = dfsSweepT(dfsInfo);
 	}
 	printDfsData(dfsInfo);
 	fprintf(stdout, "\nFSTK: ");
-	//while (intSize(getFinishStk(dfsInfo)) != 0)
-	for(int i = 0; i< intSize(*getFinishStk(dfsInfo)); i++)//added star6/5:0352pm
+	
+	for(int i = 0; i< intSize(getFinishStk(dfsInfo)); i++)
 	{
-		fprintf(stdout, "%d  ", intData(*getFinishStk(dfsInfo), i));//added star^
+		fprintf(stdout, "%d  ", intData(getFinishStk(dfsInfo), i));
 	}
 	fprintf(stdout, "\n");
 
 	sccList = calloc(nodeCount, sizeof(IntVec));
 	sccList = findSCCs(adjList, dfsInfo);
+	//free alocated mem--------------------------------
+	
+	for (int i = 1; i <= nodeCount; i++)
+	{
+		free(adjList[i]);
+	}
+	free(adjList);
+	free(dfsInfo->color);
+	free(dfsInfo->discoverTime);
+	free(dfsInfo->finishTime);
+	free(dfsInfo->parent);
+	free(dfsInfo->finishStk);
+	free(dfsInfo);
 
+	for (int i = 1; i <= nodeCount; i++)
+	{
+		free(sccList[i]);
+	}
+	free(sccList);
+	for (int i = 0; i <= nodeCount; i++)
+		free(adjMatrix[i]);
+	free(adjMatrix);
+	free(inputFile);
+	
 	fprintf(stdout, "Program completed with no errors, Press any key to exit: ");
 	getc(stdin);
-	return EXIT_SUCCESS;
 }

@@ -11,15 +11,15 @@ The following is the Integer vector node adt.
 #include "intVec.h"
 
 	//Struct definitions----------------------------------------------------------------
-	struct IntVecNode
+	typedef struct IntVecNode
 	{
 		int *data;
 		int sz;
 		int capacity;
-	};
+	}*IntVecNode;
 
 	//Variables-------------------------------------------------------------------------
-	IntVec newVec;
+	
 
 	/* Access functions
 	*/
@@ -88,7 +88,9 @@ The following is the Integer vector node adt.
 	*/
 	IntVec intMakeEmptyVec(void)
 	{
+		IntVec newVec;
 		newVec = calloc(1, sizeof(struct IntVecNode));
+		
 		newVec->data = calloc(intInitCap, sizeof(int));
 		newVec->sz = 0;
 		newVec->capacity = intInitCap;
@@ -99,7 +101,9 @@ The following is the Integer vector node adt.
 		IntVec returnVal;
 		if (np1 < 0)//assumed precondition
 			exit(EXIT_FAILURE);
-		returnVal = intMakeEmptyVec();
+		returnVal = calloc(1, sizeof(struct IntVecNode));
+		returnVal->data = calloc(np1, sizeof(int));
+		returnVal->sz = 0;
 		returnVal->capacity = np1;
 		return returnVal;
 	}
@@ -120,6 +124,7 @@ The following is the Integer vector node adt.
 	*/
 	void intVecPush(IntVec myVec, int newE) //fixed
 	{
+		int temp = 0;
 		if (myVec == NULL) //if precondition fails.
 		{
 			fprintf(stderr, "Error: myVec == NULL");
@@ -128,7 +133,8 @@ The following is the Integer vector node adt.
 		//replacing 
 		if (intSize(myVec) == intCapacity(myVec))
 		{
-			myVec->data = (int*)realloc(myVec->data, (sizeof(int) * (intSize(myVec)) * 2));//found her
+			temp = sizeof(int) * (myVec->sz) * 2;
+			myVec->data = (int*)realloc((myVec->data), (temp));
 			if (myVec->data == NULL) //if realloc failed.
 			{
 				fprintf(stderr, "Error: realloc failed");

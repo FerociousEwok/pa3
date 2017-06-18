@@ -4,7 +4,7 @@
 struct dfsDataObj {
 	int *discoverTime, *finishTime, *parent;
 	int timeCount;
-	IntVec *finishStk;
+	IntVec finishStk;
 	char *color;
 };
 
@@ -18,6 +18,6 @@ void printDfsData(dfsData dfsInfo);
 
 void printDfsData2(dfsData dfsInfoT, IntVec* roots);
 
-IntVec* getFinishStk(dfsData dfsInfo);
+IntVec getFinishStk(dfsData dfsInfo);
 
 #endif

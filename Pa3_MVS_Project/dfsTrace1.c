@@ -19,7 +19,7 @@ typedef struct dfsDataObj dfsDataObj;
 
 
 
-IntVec* getFinishStk(dfsData dfsInfo)
+IntVec getFinishStk(dfsData dfsInfo)
 {
 	return dfsInfo->finishStk;
 }
@@ -27,16 +27,17 @@ IntVec* getFinishStk(dfsData dfsInfo)
 /**/
 dfsData makeNewDfsDataObj(int nodeCount)
 {
-	dfsData dfsObj = calloc(1, sizeof(dfsData));
-	dfsObj->discoverTime = calloc(nodeCount, sizeof(int));
-	dfsObj->finishTime = calloc(nodeCount, sizeof(int));
-	dfsObj->parent = calloc(nodeCount, sizeof(int));
-	*(dfsObj->finishStk) = intMakeEmptyVecN(nodeCount);//memory pointed to by finishStk set to be a vector obj
-	dfsObj->color = calloc(nodeCount, sizeof(char));
+	dfsData dfsObj = calloc(1, sizeof(struct dfsDataObj));//changed from dfsData
+	dfsObj->discoverTime = calloc(nodeCount+1, sizeof(int));
+	dfsObj->finishTime = calloc(nodeCount+1, sizeof(int));
+	dfsObj->parent = calloc(nodeCount+1, sizeof(int));
+
+	dfsObj->finishStk = intMakeEmptyVecN(nodeCount);//memory pointed to by finishStk set to be a vector obj
+	dfsObj->color = calloc(nodeCount+1, sizeof(char));
 	for (int i = 1; i <= nodeCount; i++)
 		dfsObj->color[i] = 'W';
 	for (int i = 1; i <= nodeCount; i++)//default:not a root
-		dfsObj->parent[i] = -1;
+		dfsObj->parent[i] = 1;//changed from -1
 	dfsObj->timeCount = 0;
 	return dfsObj;
 }
@@ -44,10 +45,10 @@ dfsData makeNewDfsDataObj(int nodeCount)
 /**/
 void printDfsData(dfsData dfsInfo)
 {
-	fprintf(stdout, "\nV    color  dTime     fTime  parent\n");
+	fprintf(stdout, "\n V  color     dTime    fTime      parent\n");
 	for (int i = 1; i <= nodeCount; i++)//for each vector i.
 	{
-		fprintf(stdout, "%d    %c        %d        %d        %d\n", i, dfsInfo->color[i], dfsInfo->discoverTime[i], dfsInfo->finishTime[i], dfsInfo->parent[i]);
+		fprintf(stdout, "%2d    %c        %2d        %2d        %2d\n", i, dfsInfo->color[i], dfsInfo->discoverTime[i], dfsInfo->finishTime[i], dfsInfo->parent[i]);
 	}
 	fprintf(stdout, "\n");
 }
@@ -55,7 +56,7 @@ void printDfsData(dfsData dfsInfo)
 void printDfsData2(dfsData dfsInfoT, IntVec* roots)//for the scc
 {
 	int temp = 0;
-	fprintf(stdout, "\nV    color2  dTime2  fTime2  parent2  dfsRoot2\n");
+	fprintf(stdout, "\n V  color2   dTime2    fTime2    parent2   dfsRoot2\n");
 	for (int i = 1; i <= nodeCount; i++)//for each vector
 	{
 		/*
@@ -64,22 +65,26 @@ void printDfsData2(dfsData dfsInfoT, IntVec* roots)//for the scc
 			for(int z = 1; z<= )
 		}
 		*/
-		fprintf(stdout, "%d    %c        %d        %d        %d        ", i, dfsInfoT->color[i], dfsInfoT->discoverTime[i], dfsInfoT->finishTime[i], dfsInfoT->parent[i]);
+		fprintf(stdout, "%2d    %c        %2d        %2d        %2d        ", i, dfsInfoT->color[i], dfsInfoT->discoverTime[i], dfsInfoT->finishTime[i], dfsInfoT->parent[i]);
 		
-		for (int j = 1; j <= nodeCount; j++)
+		for (int j = 1; j <= nodeCount; j++)//for each root of the dfs tree
 		{
-			if(roots[j] != NULL)//for each root of the dfs tree
-			{
 				for (int z = 0; z < intSize(roots[j]); z++)//for each value in current roots data array
 				{
 					if (i == intData(roots[j], z))//if current vector i is a root of j
 					{
-						fprintf(stdout, "%d", j);
+						fprintf(stdout, "%2d", j);
 					}
 				}
-			}
 		}
 		fprintf(stdout, "\n");
+	}
+	fprintf(stdout, "\n");
+	fprintf(stdout, "\nFSTK: ");
+	//while (intSize(getFinishStk(dfsInfo)) != 0)
+	for (int i = 0; i< intSize(getFinishStk(dfsInfoT)); i++)//added star6/5:0352pm
+	{
+		fprintf(stdout, "%d  ", intData(getFinishStk(dfsInfoT), i));//added star^
 	}
 	fprintf(stdout, "\n");
 }
@@ -117,6 +122,6 @@ void dfsTrace1(IntVec* adjVertices, int v, dfsData dfsInfo, IntVec *roots, int c
 	dfsInfo->timeCount += 1;
 	dfsInfo->finishTime[v] = dfsInfo->timeCount;
 	dfsInfo->color[v] = 'B';
-	intVecPush(*(dfsInfo->finishStk), v);
+	intVecPush(dfsInfo->finishStk, v);
 	return;
 }
