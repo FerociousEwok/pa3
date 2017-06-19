@@ -71,11 +71,11 @@ void printAdjVerts(IntVec *adjList, int nodeCount)
 	fprintf(stdout, "nodeCount = %d\nedgeCount = %d\n\n", n, m);
 	for (int w = 1; w <= n; w++) //for each node
 	{
-		fprintf(stdout, "%d  [", (w));
+		fprintf(stdout, " %2d  [", (w));
 		for (int u = 0; u < intSize(adjList[w]); u++) //for each edge from that node
 		{
 			data = intData(adjList[w], u);
-			fprintf(stdout, "%d", data);
+			fprintf(stdout, "%2d", data);
 			if (u < intSize(adjList[w]) - 1) //if its not the last element
 				fprintf(stdout, ", ");
 		}
@@ -87,19 +87,19 @@ void printAdjVerts(IntVec *adjList, int nodeCount)
 void printAdjMatrix(int** adjMatrix, int nodeCount)
 {
 	fprintf(stdout, "Matrix:\n");
-	fprintf(stdout, "     ");
+	fprintf(stdout, "        ");
 	for (int i = 1; i <= nodeCount; i++)
 	{
-		fprintf(stdout, "%d  ", i);
+		fprintf(stdout, "%2d   ", i);
 	}
 	fprintf(stdout, "\n");
 	for (int i = 1; i <= nodeCount; i++) //for each adjList[i]
 	{
-		fprintf(stdout, "\n%d :  ", i);
+		fprintf(stdout, "\n  %2d :  ", i);
 		for (int j = 1; j <= nodeCount; j++) //for each potential edge
 		{
 			if(adjMatrix[i][j] == 0 || adjMatrix[i][j] == 1)//needed in case where intSize(vector) == 0
-				fprintf(stdout, "%d  ", adjMatrix[i][j]);
+				fprintf(stdout, "%2d   ", adjMatrix[i][j]);
 			else
 				fprintf(stdout, "0  ");
 		}
@@ -127,11 +127,7 @@ IntVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
 	
 	tempList = calloc(nodeCount + 1, sizeof(IntVec));
 	for (int i = 0; i <= nodeCount; i++)
-
 		tempList[i] = intMakeEmptyVec();
-	//below is some input file cleanup
-	for (int i = 0; i < 1; i++)
-		fgets(lineOfFile, 20, inputFile);
 	while ((fgets(lineOfFile, 20, inputFile) != NULL)) //for each line of the file.
 	{
 		if (lineOfFile[0] == '\n') //if fgets needed to clear newline character
@@ -153,10 +149,10 @@ IntVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
 int getNodeCount(FILE *inputFile) //Only call once or there might be errors.
 {
 	int temp = 0;
-	char tempString[5];
-	fgets(tempString, 2, inputFile);
-	
-	return (int)((int)tempString[0] - (int)'0'); //convert string to int.
+	char *tempString = calloc(5, sizeof(char));
+	fgets(tempString, 5, inputFile);
+	temp = atoi(tempString);
+	return temp;
 }
 
 int getEdgeCount(IntVec *adjList) //Can call multiple times.
