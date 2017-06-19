@@ -1,7 +1,10 @@
 /*
-
+dfsPhase2.c
+Ben Donn
+pa3
+This file contains sweep function to find new roots and dfsPhase2() which runs on the transposed graph and calculates scc.
 */
-//#include "scc03.c" think this causes compile error, multiple mains
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "intVec.h"
@@ -28,16 +31,16 @@ IntVec* dfsPhase2(IntVec *adjList, dfsData dfsInfo)
 	newRoot = dfsSweepT(dfsInfo);
 	while (newRoot != -1)
 	{
-		//intVecPush(roots, newRoot); Replace with proper roots storage; 6/4 5pm-------------------------------------
+		
 		dfsTrace1(adjList, newRoot, dfsInfo, roots, newRoot);
 		newRoot = dfsSweepT(dfsInfo);
 	}
-	//process dfsInfo and into roots (type IntVec*)
+	
 	return roots;
 }
 
 
-int dfsSweepT(dfsData dfsInfo)//may be infinite loop here.
+int dfsSweepT(dfsData dfsInfo)
 {
 	
 	int tempReturn = -1;

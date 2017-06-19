@@ -1,3 +1,8 @@
+/*
+dfsTrace1.h
+Ben Donn
+pa3
+*/
 #ifndef C101Trace
 #define C101Trace
 

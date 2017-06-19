@@ -4,6 +4,7 @@ Ben Donn
 bdonn
 pa3
 
+This is the main file for pa3. This project calculates strongly connected components of a graph by transposing a graph and running depth first search on it.
 */
 
 
@@ -23,12 +24,8 @@ pa3
 
 
 int nodeCount = 0;
-//IntVec finishStk1; should be in dfsTrace1.c struct now
-//char *color; should be in dfsTrace1.c struct now
 
-
-
-IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//Todo: 2 things, 2 comments.; Also, dfs1Trace must take parameter roots also.
+IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)
 {
 	IntVec *roots;//where the scc answer will go.
 	int tempRoot = -1, newRoot2 = -1;
@@ -37,16 +34,12 @@ IntVec* findSCCs(IntVec *adjList, dfsData dfsInfo)//Todo: 2 things, 2 comments.;
 	adjListT = calloc(nodeCount+1, sizeof(IntVec));
 	dfsInfoT = makeNewDfsDataObj(nodeCount);
 
-	//roots = calloc(nodeCount + 1, sizeof(IntVec));
-
-	
-
 	adjListT = transposeGraph(adjList, nodeCount);
 	fprintf(stdout, "\n-----Transpose-----\n");
 	printAdjVerts(adjListT, nodeCount);
-	printAdjMatrix(makeAdjMatrix(adjListT, nodeCount), nodeCount);//formating my be needed in these lines.
+	printAdjMatrix(makeAdjMatrix(adjListT, nodeCount), nodeCount);
 
-	roots = dfsPhase2(adjListT, dfsInfoT);//------Formating probably needed for the below lines----
+	roots = dfsPhase2(adjListT, dfsInfoT);
 	
 	printDfsData2(dfsInfoT, roots);
 
@@ -82,8 +75,6 @@ void main(int argc, char **argv)
 	int flagCheckOne = 0, flagCheckTwo = 0, newRoot = 0;
 	int** adjMatrix;
 
-	//tempInputString = calloc(100, sizeof(char));
-
 	if (argc == 1) //no command line argument
 	{
 		fprintf(stderr, "Error: no command line arguments.\nPress any key to close: ");
@@ -101,7 +92,7 @@ void main(int argc, char **argv)
 	{		
 		fprintf(stdout, "\nPlease type a file name(Up to 25 characters): ");
 		userInput = calloc(25, sizeof(char));
-		//userInput = getc(stdin);//thats not how this should work. use scanf
+		
 		scanf("%s", userInput);
 		tempInputString = userInput;
 		fprintf(stdout, "\n");
@@ -143,7 +134,6 @@ void main(int argc, char **argv)
 	newRoot = dfsSweepT(dfsInfo);
 	while (newRoot != -1)
 	{
-		//roots1[newRoot] = intMakeEmptyVec();
 		dfsTrace1(adjList, newRoot, dfsInfo, roots1, newRoot);//dfs starting at node newRoot
 		newRoot = dfsSweepT(dfsInfo);
 	}

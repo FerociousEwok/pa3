@@ -1,5 +1,5 @@
 /* intVec.h
- * (what is the overall purpose of this file? Replace question with your text)
+ * This file outlines how the intVec adt should be implemented in intVec.c
  */
 
 #ifndef C101IntVec
@@ -17,7 +17,7 @@ static const int intInitCap = 4;
  */
 
 /** intTop()
- * (what are the preconditions? Replace question with your text)
+ * (preconditions: myVec != NULL and myVec->data[(myVec->sz) - 1] != NULL)
  */
 int intTop(IntVec myVec);
 

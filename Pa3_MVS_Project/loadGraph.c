@@ -8,6 +8,8 @@ loadGraph.c
 Ben Donn
 bdonn
 pa3
+
+This file handles printing, and proccessing of user input.
 */
 int globalEdgeCount = 0;
 
@@ -53,7 +55,7 @@ IntVec* transposeGraph(IntVec* adjList, int n)
 		for (int j = 0; j < intSize(adjList[i]); j++)//for each element in adjList[i]->data
 		{
 			data = intData(adjList[i], j);
-			if(data >=0) //added to avoid bad number
+			if(data >=0)
 				intVecPush(transposedList[data], i);//transpose from adjList to new vector array.
 		}
 	}
@@ -73,14 +75,9 @@ void printAdjVerts(IntVec *adjList, int nodeCount)
 		for (int u = 0; u < intSize(adjList[w]); u++) //for each edge from that node
 		{
 			data = intData(adjList[w], u);
-
-			//if (data < 0)//this might mess up alignment
-				//fprintf(stdout, "%d", (int*)data);//maybe-------------------------
-			//else
-				fprintf(stdout, "%d", data);
+			fprintf(stdout, "%d", data);
 			if (u < intSize(adjList[w]) - 1) //if its not the last element
-					fprintf(stdout, ", ");
-			
+				fprintf(stdout, ", ");
 		}
 		fprintf(stdout, "]\n");
 	}
@@ -141,21 +138,14 @@ IntVec* loadGraph(FILE *inputFile, int nodeCount, char* flag)
 			fgets(lineOfFile, 20, inputFile);
 		sscanf(lineOfFile, "%d %d %f", tempInt, dataValue, weight);
 
-		/*
-		tempInt = (int)tempToken[0] - (int)'0';
-		dataValue = (int)tempDataValue[0] - (int)'0';
-		if (!((float)tempWeight[0] == 0.00))
-			weight = (float)tempWeight[0] - (float)'0';
-		*/
-
-			intVecPush(tempList[*tempInt], *dataValue);
+		intVecPush(tempList[*tempInt], *dataValue);
+		globalEdgeCount++;
+		equal = strcmp(flag, "-U");
+		if (equal == 0) //if undirected
+		{
+			intVecPush(tempList[*dataValue], *tempInt);
 			globalEdgeCount++;
-			equal = strcmp(flag, "-U");
-			if (equal == 0) //if undirected
-			{
-				intVecPush(tempList[*dataValue], *tempInt);
-				globalEdgeCount++;
-			}
+		}
 	}
 	return tempList;
 }
@@ -172,13 +162,5 @@ int getNodeCount(FILE *inputFile) //Only call once or there might be errors.
 int getEdgeCount(IntVec *adjList) //Can call multiple times.
 {
 	return globalEdgeCount;
-	/*
-	fprintf(stdout, "congrats, made it to getEdgeCount\n");
-	int n = 0, m = 0;
-	n = sizeof(adjList) / sizeof(IntVec); //no it doesnt.
-	n -= 1;
-	for (int i = 0; i < n; i++)
-		m += intSize(adjList[i]);
-	return m;
-	*/
+	
 }
